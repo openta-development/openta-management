@@ -1,0 +1,40 @@
+!/.gitignore
+*.swp
+*.pyc
+.log/
+bak/
+
+__pycache__/
+
+keyfile.json
+cert.*
+
+
+# django files
+django/env
+django/env3.5/
+
+# frontend
+frontend/bin
+frontend/last_build/
+frontend/node_modules
+frontend/public
+frontend/reports
+
+# sqllite files
+db.sqlite3
+
+# code coverage analyzer report
+
+# python virtual environments
+env/
+.venv/
+
+# direnv related
+.direnv/
+.envrc
+
+# Visual Studio Code related
+.vscode/
+typings/
+

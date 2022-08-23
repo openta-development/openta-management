@@ -1,0 +1,8 @@
+#!/bin/bash
+cat Dockerfile.template  | sed "s/VERSION/${VERSION}/" > Dockerfile
+echo Make sure dockerfile has ${VERSION} for base image
+export githash=`git rev-parse --short HEAD`
+docker build --tag opentaproject/openta-management:${VERSION} .
+#cp -rp servermanager/deploystatic servermanager/deploystatic.${githash}
+docker push opentaproject/openta-management:${VERSION}
+docker tag opentaproject/openta-management:${VERSION} opentaproject/openta-management:${githash}
