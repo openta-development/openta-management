@@ -36,9 +36,12 @@ class OpenTASiteAdmin( admin.ModelAdmin ):
     def get_queryset(self,request ) :
         qs = super(OpenTASiteAdmin,self).get_queryset(request)
         for q in qs :
-            if not 'description' in q.data.keys() :
-                q.data['description'] = ''
-                q.save()
+            try :
+                if not 'description' in q.data.keys() :
+                    q.data['description'] = ''
+                    q.save()
+            except :
+                pass
         return qs
 
 

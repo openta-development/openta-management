@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-import os
+import os, sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-h^(ah*cpz3@wenhjw7$!k#ags8^k*&$8=jk3%s4_%bw*dph+d("
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+RUNNING_DEVSERVER = len(sys.argv) > 1 and sys.argv[1] == 'runserver'
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "opentasites.apps.OpentasitesConfig",
     "django_json_widget",
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -62,8 +64,8 @@ ROOT_URLCONF = "servermanager.urls"
 
 TEMPLATES = [
     {
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -83,24 +85,25 @@ WSGI_APPLICATION = "servermanager.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 
+DATABASE_ROUTERS = ['servermanager.routers.AuthRouter']
+DB_FOR_MANAGER = "managerdefault1"
 DATABASES =  {
    'default' : {
       'ENGINE': 'django.db.backends.postgresql_psycopg2',
-      'NAME': 'testdefault',
+      'NAME': DB_FOR_MANAGER,
       'USER': PGUSER,
       'PASSWORD': PGPASSWORD,
       'HOST': PGHOST,
       'PORT': 5432,
     },
-
-    'sites' : {
+   'opentasites' : {
       'ENGINE': 'django.db.backends.postgresql_psycopg2',
-      'NAME': 'sites',
+      'NAME': 'opentasites',
       'USER': PGUSER,
       'PASSWORD': PGPASSWORD,
       'HOST': PGHOST,
       'PORT': 5432,
-    },
+    }
  }
 
 
@@ -141,9 +144,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 STATIC_ROOT = os.path.join(BASE_DIR, "deploystatic")
 ALLOWED_HOSTS = ['*']
 #STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+AUTH_USER_MODEL = "accounts.CustomUser"
 
