@@ -9,6 +9,8 @@ __pycache__/
 keyfile.json
 cert.*
 
+static
+deploystatic
 
 # django files
 django/env
