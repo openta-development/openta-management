@@ -86,7 +86,7 @@ WSGI_APPLICATION = "servermanager.wsgi.application"
 DATABASES =  {
    'default' : {
       'ENGINE': 'django.db.backends.postgresql_psycopg2',
-      'NAME': 'opentadefault1',
+      'NAME': 'testdefault',
       'USER': PGUSER,
       'PASSWORD': PGPASSWORD,
       'HOST': PGHOST,
@@ -128,9 +128,7 @@ NO_AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
-
+TIME_ZONE = 'Europe/Copenhagen'
 USE_I18N = True
 
 USE_TZ = True
@@ -138,8 +136,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
