@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
+from django.contrib.auth.decorators import login_required, permission_required
 
 from django.http import HttpResponse
 
+@login_required
 def main(request):
     print(f"MAIN ")
     if not request.user.is_authenticated:
