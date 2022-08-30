@@ -23,7 +23,7 @@ from servermanager import views as managerviews
 from django.urls import re_path 
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-from accounts.serializers import CustomUserViewSet, GroupViewSet,FriendViewSet
+from accounts.serializers import CustomUserViewSet, GroupViewSet,FriendViewSet, FriendshipRequestViewSet
 from opentasites.serializers import OpenTASiteViewSet
 from django.contrib.auth.models import Group, Permission
 
@@ -31,6 +31,7 @@ from django.contrib.auth.models import Group, Permission
 router = routers.SimpleRouter()
 
 router.register(r'friends', FriendViewSet)
+router.register(r'friendships', FriendshipRequestViewSet)
 router.register(r'accounts', CustomUserViewSet)
 router.register(r'groups', GroupViewSet)
 router.register(r'opentasites', OpenTASiteViewSet)

@@ -50,7 +50,6 @@ class FriendSerializer(serializers.ModelSerializer):
         fields = ('fromu','tou',)
 
     def get_tou(self, instance):
-        print(f"INSTANCE =  {instance.to_user} {instance.from_user} ")
         return instance.to_user.username
 
     def get_fromu(self, instance):
@@ -65,3 +64,29 @@ class FriendViewSet(viewsets.ModelViewSet):
     """
     serializer_class = FriendSerializer
     queryset = Friend.objects.all()
+
+class FriendshipRequestSerializer(serializers.ModelSerializer):
+
+    tou = serializers.SerializerMethodField()
+    fromu = serializers.SerializerMethodField()
+
+
+    class Meta:
+        model = FriendshipRequest
+        fields = ('fromu','tou','message')
+
+    def get_tou(self, instance):
+        return instance.to_user.username
+
+    def get_fromu(self, instance):
+        return instance.from_user.username
+        
+
+
+
+class FriendshipRequestViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing user instances.
+    """
+    serializer_class = FriendshipRequestSerializer
+    queryset = FriendshipRequest.objects.all()
