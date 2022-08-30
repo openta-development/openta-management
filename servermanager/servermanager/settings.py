@@ -47,8 +47,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "opentasites.apps.OpentasitesConfig",
     "django_json_widget",
-    "friendship",
     "accounts",
+    "friendship",
 ]
 
 MIDDLEWARE = [
@@ -151,4 +151,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "deploystatic")
 ALLOWED_HOSTS = ['*']
 #STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 AUTH_USER_MODEL = "accounts.CustomUser"
-
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "/admin/"

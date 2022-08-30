@@ -26,6 +26,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         dry_run = ( kwargs.get('dry-run') ).lower() == 'true'
+        MAKE_FRIENDS = True
+        MAKE_USERS = True
         opentasites  =  OpenTASite.objects.using('opentasites').all()
         all_superusers = []
         for o in opentasites :
@@ -47,19 +49,20 @@ class Command(BaseCommand):
            #for d in dd :
            #    print(f"d = {d}")
            passwords[email] = dd[-1]['password']
-        for user in  passwords.keys():
-            p = passwords[user]
-            if not p :
-                p = make_password( user )
-            print(f"{user} {p}")
-            if not dry_run :
-                account, _ = CustomUser.objects.get_or_create(email=user)
-                account.password = p
-                account.username = user
-                account.save()
-                print(f"updated {user}")
-            else :
-                print(f"would update {user}")
+        if MAKE_USERS :
+            for user in  passwords.keys():
+                p = passwords[user]
+                if not p :
+                    p = make_password( user )
+                print(f"{user} {p}")
+                if not dry_run :
+                    account, _ = CustomUser.objects.get_or_create(email=user)
+                    account.password = p
+                    account.username = user
+                    account.save()
+                    print(f"updated {user}")
+                else :
+                    print(f"would update {user}")
         bogus = ['super@gmail.com','test@test.se']
         for email in all_emails :
             first_part = email.split('@')[0]
@@ -70,7 +73,7 @@ class Command(BaseCommand):
                 bogus = bogus + [email]
                 print(f" NOK {email}")
 
-        if True :
+        if MAKE_FRIENDS :
             for o in opentasites :
                 data = o.data
                 try :
@@ -98,22 +101,3 @@ class Command(BaseCommand):
                 except Exception as e:
                     print(f" ERROR 9227 {type(e).__name__} {str(e)} ")
 
-            #    u1 = CustomUser.objects.get(email='ostlund@gmail.com')
-            #    u2 = CustomUser.objects.get(email='super@localhost')
-            #try :
-            #    Friend.objects.add_friend(u1,u2)
-            #except AlreadyFriendsError as e:
-            #    print(f"Error = {type(e).__name__}")
-            #    pass
-            #try :
-            #    friend_request = FriendshipRequest.objects.get(from_user=u1, to_user=u2)
-            #    friend_request.accept()
-            #except DoesNotExist as e :
-            #    pass
-
-
-
-
-
-
-        

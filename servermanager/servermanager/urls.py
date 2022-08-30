@@ -21,13 +21,20 @@ from django.urls import include, path
 from servermanager import views as managerviews
 from django.urls import re_path 
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 
 
 urlpatterns = [
+    re_path(r'^login/?$', auth_views.LoginView.as_view(template_name='accounts/login.html')),
+    re_path(r'^logout/?$', auth_views.LogoutView.as_view(template_name='accounts/login.html')),
+    re_path(r'^accounts/login/?$', auth_views.LoginView.as_view(template_name='accounts/login.html')),
+    re_path(r'^accounts/', include('django.contrib.auth.urls')),
+    re_path(r'^$', managerviews.main),
     path('opentasites/', include('opentasites.urls')),
     path("admin/", admin.site.urls),
     path("", managerviews.main ),
+    path('change-password/', auth_views.PasswordChangeView.as_view()),
     re_path(r"^health/?", managerviews.health ),
     path('friendship/', include('friendship.urls'))
     ] +  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
