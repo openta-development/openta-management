@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
+from rest_framework import routers
 
 from django.contrib import admin
 from django.urls import path
@@ -22,13 +23,25 @@ from servermanager import views as managerviews
 from django.urls import re_path 
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from accounts.serializers import CustomUserViewSet, GroupViewSet,FriendViewSet
+from opentasites.serializers import OpenTASiteViewSet
+from django.contrib.auth.models import Group, Permission
+
+
+router = routers.SimpleRouter()
+
+router.register(r'friends', FriendViewSet)
+router.register(r'accounts', CustomUserViewSet)
+router.register(r'groups', GroupViewSet)
+router.register(r'opentasites', OpenTASiteViewSet)
+
 
 
 
 urlpatterns = [
+    path('', include(router.urls)),
     re_path(r'^login/?$', auth_views.LoginView.as_view(template_name='registration/login.html')),
     re_path(r'^logout/?$', auth_views.LogoutView.as_view(template_name='registration/login.html')),
-    re_path(r'^accounts/login/?$', auth_views.LoginView.as_view(template_name='registration/login.html')),
     re_path(r'^', include('django.contrib.auth.urls')),
     re_path(r'^$', managerviews.main),
     path('opentasites/', include('opentasites.urls')),

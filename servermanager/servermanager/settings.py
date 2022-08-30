@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "opentasites.apps.OpentasitesConfig",
     "django_json_widget",
     "accounts",
+    'rest_framework',
     "friendship",
     "crispy_forms",
 ]
