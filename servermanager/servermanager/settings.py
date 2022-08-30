@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django_json_widget",
     "accounts",
     "friendship",
+    "crispy_forms",
 ]
 
 MIDDLEWARE = [
@@ -153,3 +154,4 @@ ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = "accounts.CustomUser"
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "/admin/"
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

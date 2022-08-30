@@ -26,9 +26,9 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
-    re_path(r'^login/?$', auth_views.LoginView.as_view(template_name='accounts/login.html')),
-    re_path(r'^logout/?$', auth_views.LogoutView.as_view(template_name='accounts/login.html')),
-    re_path(r'^accounts/login/?$', auth_views.LoginView.as_view(template_name='accounts/login.html')),
+    re_path(r'^login/?$', auth_views.LoginView.as_view(template_name='registration/login.html')),
+    re_path(r'^logout/?$', auth_views.LogoutView.as_view(template_name='registration/login.html')),
+    re_path(r'^accounts/login/?$', auth_views.LoginView.as_view(template_name='registration/login.html')),
     re_path(r'^accounts/', include('django.contrib.auth.urls')),
     re_path(r'^$', managerviews.main),
     path('opentasites/', include('opentasites.urls')),
