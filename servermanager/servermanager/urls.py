@@ -28,5 +28,6 @@ urlpatterns = [
     path('opentasites/', include('opentasites.urls')),
     path("admin/", admin.site.urls),
     path("", managerviews.main ),
-    re_path(r"^health/?", managerviews.health )
+    re_path(r"^health/?", managerviews.health ),
+    path('friendship/', include('friendship.urls'))
     ] +  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "opentasites.apps.OpentasitesConfig",
     "django_json_widget",
+    "friendship",
     "accounts",
 ]
 

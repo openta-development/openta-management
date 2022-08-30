@@ -1,4 +1,6 @@
 from django.contrib.auth.hashers import make_password
+from django.db.models.base import ObjectDoesNotExist 
+from email.utils import parseaddr
 import datetime
 import json
 from django.contrib.auth.hashers import make_password
@@ -12,6 +14,8 @@ import glob
 import re
 from django.db import connections, connection
 from accounts.models import CustomUser
+from friendship.models import Friend,FriendshipRequest
+from friendship.exceptions import AlreadyExistsError, AlreadyFriendsError
 
 class Command(BaseCommand):
 
@@ -56,5 +60,60 @@ class Command(BaseCommand):
                 print(f"updated {user}")
             else :
                 print(f"would update {user}")
+        bogus = ['super@gmail.com','test@test.se']
+        for email in all_emails :
+            first_part = email.split('@')[0]
+            last_part = email.split('@')[1].split('.')
+            if first_part and len( last_part) >  1  and not 'super' in first_part :
+                print(f" OK {email} ")
+            else :
+                bogus = bogus + [email]
+                print(f" NOK {email}")
+
+        if True :
+            for o in opentasites :
+                data = o.data
+                try :
+                    superusers = data['superusers']
+                    for i in range(1,len(superusers) ):
+                        for j in range(0,i):
+                            e1 = superusers[i]['email']
+                            e2 = superusers[j]['email']
+                            if not e1 in bogus and not e2 in bogus :
+                                u1 = CustomUser.objects.get(email=e1)
+                                u2 = CustomUser.objects.get(email=e2)
+                                try :
+                                    Friend.objects.add_friend(u1,u2)
+                                except AlreadyFriendsError as e:
+                                    #print(f"Error = {type(e).__name__}")
+                                    pass
+                                try :
+                                    friend_request = FriendshipRequest.objects.get(from_user=u1, to_user=u2)
+                                    friend_request.accept()
+                                except ObjectDoesNotExist as e:
+                                    pass
+                                except Exception as e :
+                                    print(f" ERROR 18993 {type(e).__name__}")
+
+                except Exception as e:
+                    print(f" ERROR 9227 {type(e).__name__} {str(e)} ")
+
+            #    u1 = CustomUser.objects.get(email='ostlund@gmail.com')
+            #    u2 = CustomUser.objects.get(email='super@localhost')
+            #try :
+            #    Friend.objects.add_friend(u1,u2)
+            #except AlreadyFriendsError as e:
+            #    print(f"Error = {type(e).__name__}")
+            #    pass
+            #try :
+            #    friend_request = FriendshipRequest.objects.get(from_user=u1, to_user=u2)
+            #    friend_request.accept()
+            #except DoesNotExist as e :
+            #    pass
+
+
+
+
+
 
         
