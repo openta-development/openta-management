@@ -30,11 +30,14 @@ from django.contrib.auth.models import Group, Permission
 
 router = routers.SimpleRouter()
 
-router.register(r'friends', FriendViewSet)
-router.register(r'friendships', FriendshipRequestViewSet)
-router.register(r'accounts', CustomUserViewSet)
-router.register(r'groups', GroupViewSet)
-router.register(r'opentasites', OpenTASiteViewSet)
+router.register(r'friends/all', FriendViewSet,basename='/')
+router.register(r'friends/to', FriendViewSet,basename='/')
+router.register(r'friends/from', FriendViewSet,basename='/')
+router.register(r'friends', FriendViewSet,basename='/')
+router.register(r'friendships_requests', FriendshipRequestViewSet,basename='/')
+router.register(r'accounts', CustomUserViewSet,basename='/')
+router.register(r'groups', GroupViewSet,basename='/')
+router.register(r'opentasites', OpenTASiteViewSet,basename='/')
 
 
 
