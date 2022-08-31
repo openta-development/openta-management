@@ -1,6 +1,7 @@
 from django.db import models
+from django.conf import settings
 from django.contrib import admin
-
+from django.db.models.signals import  post_save, pre_delete
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin, UserManager
 from django.contrib.auth.validators import ASCIIUsernameValidator
@@ -8,8 +9,18 @@ from opentasites.models import OpenTASite
 from django.contrib.postgres.fields import CICharField, CIEmailField
 from django.core.mail import send_mail
 from django.db import models
+from django.dispatch import Signal, receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def post_save(sender, instance, created, **kwargs):
+    email = instance.email
+    signal = kwargs['signal']
+    print(f"PASSWSORD = {instance.password}")
+    subdomains = instance.related_subdomains()
+    for subdomain in subdomains:
+        print(f" subdomain = {subdomain}")
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -57,6 +68,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _("user")
         verbose_name_plural = _("users")
+
+    #def post_save(self, *args, **kwargs):
+    #    logger.error(f"POST SAVE USER")
+
+
+    def save(self, *args, **kwargs):
+        print(f"SAVE USER")
+        super().save(*args, **kwargs) 
+
 
     def clean(self):
         super().clean()

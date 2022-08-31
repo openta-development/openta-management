@@ -27,7 +27,7 @@ class OpenTASiteViewSet(viewsets.ModelViewSet):
             queryset = OpenTASite.objects.filter(creator=self.request.user.email)
         else :
             queryset = OpenTASite.objects.all()
-        subdomains = self.request.user.get_related_subdomains()
+        subdomains = self.request.user.related_subdomains()
         #if keep in ['to','all'] :
         #    queryset = list( Friend.objects.all().filter(from_user=self.request.user) ) 
         #if keep in ['from','all'] :

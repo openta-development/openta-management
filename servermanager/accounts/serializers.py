@@ -10,6 +10,13 @@ from friendship.models import Friend,FriendshipRequest
 from rest_framework import generics
 
 
+class ChangePasswordSerializer(serializers.Serializer):
+
+    """
+    Serializer for password change endpoint.
+    """
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
 
 class CustomUserSerializer(serializers.ModelSerializer):
 
@@ -17,7 +24,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('username','email','related_subdomains','password')
+        fields = ('id','username','email','related_subdomains','password')
 
 
     def get_related_subdomains(self,instance):
@@ -29,6 +36,12 @@ class CustomUserViewSet(viewsets.ModelViewSet):
     A viewset for viewing and editing user instances.
     """
     serializer_class = CustomUserSerializer
+
+    def update(self, request , *args, **kwargs):
+        return Response({
+            "is_password_updated": self.update_password(request, instance),
+            "result": serializer.data
+        }) 
 
     def get_queryset(self , *args, **kwargs ):
         print(f"GET QUERYSET")
@@ -45,6 +58,18 @@ class CustomUserViewSet(viewsets.ModelViewSet):
         #if keep in ['friends'] :
         #    queryset = Friend.objects.all()
         return queryset
+
+    def update_password(self, request, instance):
+        serializer = ChangePasswordSerializer(data = request.data)
+        if serializer.is_valid():
+            input_data = serializer.validated_data
+            cur_password = input_data.get('current_password')
+            new_password = input_data.get('new_password')
+            if instance.check_password(cur_password):
+                instance.set_password(new_password)
+                instance.save()
+                return True
+        return False
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -96,6 +121,33 @@ class FriendSerializer(serializers.ModelSerializer):
 
         
 
+#class ChangePasswordAPI(generics.UpdateAPIView):
+#        """
+#        An endpoint for changing password.
+#        """
+#        serializer_class = ChangePasswordSerializer
+#        model = CustomUser
+#        #permission_classes = (IsAuthenticated,)
+#
+#        def get_object(self, queryset=None):
+#            obj = self.request.user
+#            return obj
+#
+#        def update(self, request, *args, **kwargs):
+#            self.object = self.get_object()
+#            serializer = self.get_serializer(data=request.data)
+#
+#            if serializer.is_valid():
+#                # Check old password
+#                if not self.object.check_password(serializer.data.get("old_password")):
+#                    return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+#                # set_password also hashes the password that the user will get
+#                self.object.set_password(serializer.data.get("new_password"))
+#                self.object.save()
+#                return Response("Success.", status=status.HTTP_200_OK)
+#
+#            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#
 
 
 class FriendViewSet(viewsets.ModelViewSet, generics.ListAPIView):

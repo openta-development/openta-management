@@ -23,9 +23,10 @@ from servermanager import views as managerviews
 from django.urls import re_path 
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-from accounts.serializers import CustomUserViewSet, GroupViewSet,FriendViewSet, FriendshipRequestViewSet
+from accounts.serializers import CustomUserViewSet, GroupViewSet,FriendViewSet, FriendshipRequestViewSet # , ChangePasswordAPI
 from opentasites.serializers import OpenTASiteViewSet
 from django.contrib.auth.models import Group, Permission
+
 
 
 router = routers.SimpleRouter()
@@ -53,7 +54,8 @@ urlpatterns = [
     path('opentasites/', include('opentasites.urls')),
     path("admin/", admin.site.urls),
     path("", managerviews.main ),
-    path('change-password/', auth_views.PasswordChangeView.as_view()),
     re_path(r"^health/?", managerviews.health ),
-    path('friendship/', include('friendship.urls'))
+    path('friendship/', include('friendship.urls')),
+    #re_path(r'^password-change/(?P<pk>[0-9]+)$', ChangePasswordAPI.as_view()), 
+    
     ] +  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
