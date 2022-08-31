@@ -21,6 +21,19 @@ def post_save(sender, instance, created, **kwargs):
     subdomains = instance.related_subdomains()
     for subdomain in subdomains:
         print(f" subdomain = {subdomain}")
+        o = OpenTASite.objects.get(subdomain=subdomain)
+        print(f" data = {o.data}")
+        superusers = o.data['superusers']
+        for u in superusers :
+            if u['email'] == email :
+                u['password'] = instance.password
+        o.save()
+        #for o in opentasites:
+        #    data = o.data
+        #    if data.email == email :
+        #        print(f"U = {data.email} {u.password}")
+        #    else :
+        #        print(f" {u.email} DOES NOT MATCH")
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
