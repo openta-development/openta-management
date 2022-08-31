@@ -88,12 +88,12 @@ class FriendViewSet(viewsets.ModelViewSet, generics.ListAPIView):
         keep = self.request.path.split('/')[-2]
         print(f"keep2 = {keep}")
         queryset = []
-        if keep in ['to','all','friends'] :
+        if keep in ['to','all'] :
             queryset = list( Friend.objects.all().filter(from_user=self.request.user) ) 
-        if keep in ['from','all','friends'] :
+        if keep in ['from','all'] :
             queryset = queryset +  list( Friend.objects.all().filter(to_user=self.request.user)   )
-
-
+        if keep in ['friends'] :
+            queryset = Friend.objects.all()
         return queryset
 
 
