@@ -18,5 +18,22 @@ class OpenTASiteViewSet(viewsets.ModelViewSet):
     A viewset for viewing and editing user instances.
     """
     serializer_class = OpenTASiteSerializer
-    queryset = OpenTASite.objects.all()
+
+    def get_queryset(self , *args, **kwargs ):
+        keep = self.request.path.split('/')[-2]
+        print(f"KEEP IN OPENTASITE = {keep}")
+        print(f"keep = {keep}")
+        if keep == 'my' :
+            queryset = OpenTASite.objects.filter(creator=self.request.user.email)
+        else :
+            queryset = OpenTASite.objects.all()
+        subdomains = self.request.user.get_related_subdomains()
+        #if keep in ['to','all'] :
+        #    queryset = list( Friend.objects.all().filter(from_user=self.request.user) ) 
+        #if keep in ['from','all'] :
+        #    queryset = queryset +  list( Friend.objects.all().filter(to_user=self.request.user)   )
+        #if keep in ['friends'] :
+        #    queryset = Friend.objects.all()
+        return queryset
+
 

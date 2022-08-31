@@ -13,9 +13,15 @@ from rest_framework import generics
 
 class CustomUserSerializer(serializers.ModelSerializer):
 
+    #related_subdomains = serializers.SerializerMethodField()
+
     class Meta:
         model = CustomUser
-        fields = '__all__'
+        fields = ('username','email','related_subdomains','password')
+
+
+    def get_related_subdomains(self,instance):
+        return instance.related_subdomains()
 
 
 class CustomUserViewSet(viewsets.ModelViewSet):
@@ -23,7 +29,22 @@ class CustomUserViewSet(viewsets.ModelViewSet):
     A viewset for viewing and editing user instances.
     """
     serializer_class = CustomUserSerializer
-    queryset = CustomUser.objects.all()
+
+    def get_queryset(self , *args, **kwargs ):
+        print(f"GET QUERYSET")
+        print(f"BASENAME = {self.basename}")
+        if self.basename == 'account' :
+            queryset = CustomUser.objects.filter(email=self.request.user.email)
+        else :
+            queryset = CustomUser.objects.all()
+
+        #if keep in ['to','all'] :
+        #    queryset = list( Friend.objects.all().filter(from_user=self.request.user) ) 
+        #if keep in ['from','all'] :
+        #    queryset = queryset +  list( Friend.objects.all().filter(to_user=self.request.user)   )
+        #if keep in ['friends'] :
+        #    queryset = Friend.objects.all()
+        return queryset
 
 
 class GroupSerializer(serializers.ModelSerializer):

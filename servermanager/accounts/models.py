@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin, UserManager
 from django.contrib.auth.validators import ASCIIUsernameValidator
+from opentasites.models import OpenTASite
 from django.contrib.postgres.fields import CICharField, CIEmailField
 from django.core.mail import send_mail
 from django.db import models
@@ -75,5 +76,23 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    def related_subdomains( self ):
+        qs = list( OpenTASite.objects.all().values_list('subdomain','data') )
+        r = []
+        for q in qs :
+            try :
+                if q[1]['creator'] == self.email :
+                    r.append( q[0] )
+                #print(f" Q = {q[0]} {q[1]['creator']}")
+                for s in q[1]['superusers'] :
+                    if s['email'] == self.email :
+                        r.append( q[0] )
+                    #print(f"S { q[0] } {s['email']}")
+            except: 
+                pass
+        r = list( set(r))
+        r.sort()
+        return r
 
 admin.site.register(CustomUser)

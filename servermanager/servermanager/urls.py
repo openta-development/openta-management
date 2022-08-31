@@ -35,9 +35,11 @@ router.register(r'friends/to', FriendViewSet,basename='/')
 router.register(r'friends/from', FriendViewSet,basename='/')
 router.register(r'friends', FriendViewSet,basename='/')
 router.register(r'friendships_requests', FriendshipRequestViewSet,basename='/')
-router.register(r'accounts', CustomUserViewSet,basename='/')
+router.register(r'account', CustomUserViewSet,basename='account')
+router.register(r'accounts', CustomUserViewSet,basename='accounts')
 router.register(r'groups', GroupViewSet,basename='/')
-router.register(r'opentasites', OpenTASiteViewSet,basename='/')
+router.register(r'opentasites/my', OpenTASiteViewSet,basename='/')
+router.register(r'opentasites/all', OpenTASiteViewSet,basename='/')
 
 
 
