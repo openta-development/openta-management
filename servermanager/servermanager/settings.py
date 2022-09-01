@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework_json_api',
     "friendship",
     "crispy_forms",
+    "crispy_bootstrap5",
 ]
 
 MIDDLEWARE = [

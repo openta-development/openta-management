@@ -27,7 +27,8 @@ from accounts.serializers import CustomUserViewSet, GroupViewSet,FriendViewSet, 
 from opentasites.serializers import OpenTASiteViewSet
 from django.contrib.auth.models import Group, Permission
 from django.views.generic import TemplateView
-from accounts.views import CustomUserListView
+from accounts.views import CustomUserListView, CustomUserEmailView
+from opentasites.views import OpenTASiteListView
 
 
 
@@ -44,6 +45,7 @@ router.register(r'api/accounts', CustomUserViewSet,basename='accounts')
 router.register(r'api/groups', GroupViewSet,basename='/')
 router.register(r'api/opentasites/my', OpenTASiteViewSet,basename='/')
 router.register(r'api/opentasites/all', OpenTASiteViewSet,basename='/')
+router.register(r'api/opentasites/', OpenTASiteViewSet,basename='/')
 
 
 
@@ -52,6 +54,8 @@ urlpatterns = [
     path('', include(router.urls)),
     path('about/', TemplateView.as_view(template_name="about.html")),
     re_path(r'^accounts/', CustomUserListView.as_view() ),
+    re_path(r'^email/(?P<email>[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/?$', CustomUserEmailView.as_view() ),
+    re_path(r'^opentasites/', OpenTASiteListView.as_view() ),
     re_path(r'^login/?$', auth_views.LoginView.as_view(template_name='registration/login.html')),
     re_path(r'^logout/?$', auth_views.LogoutView.as_view(template_name='registration/login.html')),
     re_path(r'^', include('django.contrib.auth.urls')),
