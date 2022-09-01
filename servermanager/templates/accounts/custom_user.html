@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
-<h1> User </h1>
-	      <a href="/api/accounts/{{ pk}}">{{ username}}</a> 
+{% block content %} <h3> Courses <a href="/api/accounts/{{ pk}}">{{ username}}</a>  is engaged in.  </h3>
 	      <div class="d-flex flex-wrap">
 		  {% for s in related_subdomains %}
 		  <div class="bg-light text-dark p-1"> <a class="link-secondary"href="https://{{ s }}.opentaproject.org/"> {{ s }}  </a> </div>
