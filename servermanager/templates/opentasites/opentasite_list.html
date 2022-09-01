@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1> Users </h1>
+  {% if opentasite_list %}
+  <ul>
+    {% for opentasite in opentasite_list %}
+      <li>
+	      <a href="/api/opentasites/all/{{ opentasite.pk}}">{{ opentasite.subdomain}}</a> 
+	      <div class="d-flex flex-wrap">
+		  {% for s in opentasite.data.superusers  %}
+		  <div class="bg-light text-dark p-1"> <a class="link-secondary" href="account/{{ s.email }}/"> {{ s.email }}  </a> </div>
+		  {% endfor %}
+	     </div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no Users</p>
+  {% endif %}
+{% endblock %}
