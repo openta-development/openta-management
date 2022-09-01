@@ -28,12 +28,6 @@ def post_save(sender, instance, created, **kwargs):
             if u['email'] == email :
                 u['password'] = instance.password
         o.save()
-        #for o in opentasites:
-        #    data = o.data
-        #    if data.email == email :
-        #        print(f"U = {data.email} {u.password}")
-        #    else :
-        #        print(f" {u.email} DOES NOT MATCH")
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):

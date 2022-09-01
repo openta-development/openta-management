@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import Group, Permission
 from friendship.models import Friend,FriendshipRequest
 from rest_framework import generics
+from rest_framework.decorators import action
 
 
 class ChangePasswordSerializer(serializers.Serializer):
@@ -24,24 +25,34 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('id','username','email','related_subdomains','password')
+        fields = ('pk','id','username','email','related_subdomains','password')
+
+    def update(self, instance , validated_data ):
+        print(f" SERIALIZER UPDATE ========== {instance}")
+        return super().update(instance, validated_data)
 
 
     def get_related_subdomains(self,instance):
         return instance.related_subdomains()
 
 
-class CustomUserViewSet(viewsets.ModelViewSet):
+class CustomUserViewSet(viewsets.ModelViewSet, generics.RetrieveUpdateDestroyAPIView):
     """
     A viewset for viewing and editing user instances.
     """
     serializer_class = CustomUserSerializer
+    #@action(
+    #        methods=["get","post","put","delete","detail"],
+    #        )
 
-    def update(self, request , *args, **kwargs):
-        return Response({
-            "is_password_updated": self.update_password(request, instance),
-            "result": serializer.data
-        }) 
+
+    #def update(self, request , *args, **kwargs):
+    #    instance = kwargs['instance']
+    #    print(f"UPDATE RECORD")
+    #    return Response({
+    #        "is_password_updated": self.update_password(request, instance),
+    #        "result": serializer.data
+    #    }) 
 
     def get_queryset(self , *args, **kwargs ):
         print(f"GET QUERYSET")
