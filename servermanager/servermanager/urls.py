@@ -26,27 +26,32 @@ from django.contrib.auth import views as auth_views
 from accounts.serializers import CustomUserViewSet, GroupViewSet,FriendViewSet, FriendshipRequestViewSet # , ChangePasswordAPI
 from opentasites.serializers import OpenTASiteViewSet
 from django.contrib.auth.models import Group, Permission
+from django.views.generic import TemplateView
+from accounts.views import CustomUserListView
+
 
 
 
 router = routers.SimpleRouter()
 
-router.register(r'friends/all', FriendViewSet,basename='/')
-router.register(r'friends/to', FriendViewSet,basename='/')
-router.register(r'friends/from', FriendViewSet,basename='/')
-router.register(r'friends', FriendViewSet,basename='/')
-router.register(r'friendships_requests', FriendshipRequestViewSet,basename='/')
-router.register(r'account', CustomUserViewSet,basename='account')
-router.register(r'accounts', CustomUserViewSet,basename='accounts')
-router.register(r'groups', GroupViewSet,basename='/')
-router.register(r'opentasites/my', OpenTASiteViewSet,basename='/')
-router.register(r'opentasites/all', OpenTASiteViewSet,basename='/')
+router.register(r'api/friends/all', FriendViewSet,basename='/')
+router.register(r'api/friends/to', FriendViewSet,basename='/')
+router.register(r'api/friends/from', FriendViewSet,basename='/')
+router.register(r'api/friends', FriendViewSet,basename='/')
+router.register(r'api/friendships_requests', FriendshipRequestViewSet,basename='/')
+router.register(r'api/account', CustomUserViewSet,basename='account')
+router.register(r'api/accounts', CustomUserViewSet,basename='accounts')
+router.register(r'api/groups', GroupViewSet,basename='/')
+router.register(r'api/opentasites/my', OpenTASiteViewSet,basename='/')
+router.register(r'api/opentasites/all', OpenTASiteViewSet,basename='/')
 
 
 
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('about/', TemplateView.as_view(template_name="about.html")),
+    re_path(r'^accounts/', CustomUserListView.as_view() ),
     re_path(r'^login/?$', auth_views.LoginView.as_view(template_name='registration/login.html')),
     re_path(r'^logout/?$', auth_views.LogoutView.as_view(template_name='registration/login.html')),
     re_path(r'^', include('django.contrib.auth.urls')),

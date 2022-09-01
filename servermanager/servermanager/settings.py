@@ -156,4 +156,4 @@ ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = "accounts.CustomUser"
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "/login/"
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
