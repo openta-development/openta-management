@@ -21,8 +21,6 @@ class OpenTASiteViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self , *args, **kwargs ):
         keep = self.request.path.split('/')[-2]
-        print(f"KEEP IN OPENTASITE = {keep}")
-        print(f"keep = {keep}")
         if keep == 'my' :
             queryset = OpenTASite.objects.filter(creator=self.request.user.email)
         else :

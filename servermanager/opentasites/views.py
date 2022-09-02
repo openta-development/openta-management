@@ -21,9 +21,23 @@ class OpenTASiteListView(ListView) :
 
     serializer_class = OpenTASiteSerializer
 
-    def head(self, *arg, **wkwargs) :
-        user = self.get_queryset()
-        response = HttpResponse(
-                    headers = {'username' : user.username }
-                    )
-        return response
+    #def head(self, *arg, **wkwargs) :
+    #    user = self.get_queryset()
+    #    response = HttpResponse(
+    #                headers = {'username' : user.username }
+    #                )
+    #    return response
+
+
+    def get_context_data(self, **kwargs):
+        c = super(OpenTASiteListView, self).get_context_data(**kwargs)
+        if "sort_by" in self.request.GET:
+            c["current_sort_field"] = self.request.GET.get("sort_by")
+        return c
+
+    def get_queryset(self):
+        # apply sorting
+        qs = super(OpenTASiteListView, self).get_queryset()
+        if "sort_by" in self.request.GET:
+            qs = qs.order_by(self.request.GET.get("sort_by"))
+        return qs

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "opentasites.apps.OpentasitesConfig",
     "django_json_widget",
+    "django_sorting_bootstrap",
     "accounts",
     "rest_framework",
     'rest_framework_json_api',

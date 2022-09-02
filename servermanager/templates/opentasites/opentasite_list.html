@@ -1,8 +1,37 @@
 {% extends "base.html" %}
+{% load sorting_tags %}
+{% auto_sort queryset %}
 
 {% block content %}
 <h3> OpenTA Sites </h3>
   {% if opentasite_list %}
+
+  <table class="table table-success table-striped table-hover ">
+  	<tr> 
+		<th>  site </th>
+		<th>   {% sort_link "Answers" "data__answers" %}  </th>
+		<th>   {% sort_link "Exercises" "data__exercises" %}  </th>
+		<th>   {% sort_link "Published" "data__exercises_published" %} </th>
+		<th>   {% sort_link "Users" "data__users" %} </th>
+		<th>   {% sort_link "Student Login" "data__last_student_login" %} </th>
+		<th>  {% sort_link "Creator" "creator" %}  </th>
+	<tr>
+
+  {% for opentasite in opentasite_list %}
+  	<tr> 
+		<td>  <a title="{{ opentasite.data.description }} - {{ opentasite.db_label }}" href="/api/opentasites/all/{{ opentasite.pk}}">{{ opentasite.subdomain}}</a> </td>
+		<td>  {{ opentasite.data.answers }} </td>
+		<td>  {{ opentasite.data.exercises }} </td>
+		<td>  {{ opentasite.data.exercises_published }} </td>
+		<td>  {{ opentasite.data.users }} </td>
+		<td>  {{ opentasite.data.last_student_login}} </td>
+		<td>  {{ opentasite.creator }} </td>
+	</tr>
+
+  {% endfor %}
+  </table>
+
+
   <ul>
     {% for opentasite in opentasite_list %}
       <li>
