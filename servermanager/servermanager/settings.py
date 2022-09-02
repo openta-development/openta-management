@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     "django_sorting_bootstrap",
     "accounts",
     "rest_framework",
-    'rest_framework_json_api',
     "friendship",
     "crispy_forms",
     "crispy_bootstrap5",

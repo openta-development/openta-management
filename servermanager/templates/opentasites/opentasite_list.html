@@ -14,7 +14,7 @@
 		<th>   {% sort_link "Published" "data__exercises_published" %} </th>
 		<th>   {% sort_link "Users" "data__users" %} </th>
 		<th>   {% sort_link "Student Login" "data__last_student_login" %} </th>
-		<th>  {% sort_link "Creator" "creator" %}  </th>
+		<th>  {% sort_link "Creator" "data__creator" %}  </th>
 	<tr>
 
   {% for opentasite in opentasite_list %}
@@ -25,7 +25,7 @@
 		<td>  {{ opentasite.data.exercises_published }} </td>
 		<td>  {{ opentasite.data.users }} </td>
 		<td>  {{ opentasite.data.last_student_login}} </td>
-		<td>  {{ opentasite.creator }} </td>
+		<td>  {{ opentasite.data.creator }} </td>
 	</tr>
 
   {% endfor %}
