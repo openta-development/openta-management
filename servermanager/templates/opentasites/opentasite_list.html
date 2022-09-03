@@ -18,6 +18,9 @@
 	<tr>
 
   {% for opentasite in opentasite_list %}
+    {% for key,value in opentasite.data.items %}
+    <td> {{ opentasite.subdomain }} </td> <td> {{key }} </td>  <td> {{ value }} </td> </tr>
+       {% comment %}
   	<tr> 
 		<td>  <a title="{{ opentasite.data.description }} - {{ opentasite.db_label }}" href="/api/opentasites/all/{{ opentasite.pk}}">{{ opentasite.subdomain}}</a> </td>
 		<td>  {{ opentasite.data.answers }} </td>
@@ -27,7 +30,9 @@
 		<td>  {{ opentasite.data.last_student_login}} </td>
 		<td>  {{ opentasite.data.creator }} </td>
 	</tr>
+      {%  endcomment %}
 
+   {% endfor %}
   {% endfor %}
   </table>
 
