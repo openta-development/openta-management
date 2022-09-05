@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load sorting_tags %}
+{% auto_sort queryset %}
+
+{% block content %}
+<h3> OpenTA Sites </h3>
+  {% if opentasite_list %}
+
+  <table class="table table-success table-striped table-hover ">
+  	<tr> 
+		<th>  site </th>
+		<th>   {% sort_link "Answers" "data__answers" %}  </th>
+		<th>   {% sort_link "Exercises" "data__exercises" %}  </th>
+		<th>   {% sort_link "Published" "data__exercises_published" %} </th>
+		<th>   {% sort_link "Users" "data__users" %} </th>
+		<th>   {% sort_link "Student Login" "data__last_student_login" %} </th>
+		<th>  {% sort_link "Creator" "data__creator" %}  </th>
+	<tr>
+
+  {% for opentasite in opentasite_list %}
+    {% for key,value in opentasite.data.items %}
+    <td> {{ opentasite.subdomain }} </td> <td> {{key }} </td>  <td> {{ value }} </td> </tr>
+       {% comment %}
+  	<tr> 
+		<td>  <a title="{{ opentasite.data.description }} - {{ opentasite.db_label }}" href="/api/opentasites/all/{{ opentasite.pk}}">{{ opentasite.subdomain}}</a> </td>
+		<td>  {{ opentasite.data.answers }} </td>
+		<td>  {{ opentasite.data.exercises }} </td>
+		<td>  {{ opentasite.data.exercises_published }} </td>
+		<td>  {{ opentasite.data.users }} </td>
+		<td>  {{ opentasite.data.last_student_login}} </td>
+		<td>  {{ opentasite.data.creator }} </td>
+	</tr>
+      {%  endcomment %}
+
+   {% endfor %}
+  {% endfor %}
+  </table>
+
+
+  <ul>
+    {% for opentasite in opentasite_list %}
+      <li>
+	      <a href="/api/opentasites/all/{{ opentasite.pk}}">{{ opentasite.subdomain}}</a> <em>  {{ opentasite.data.creator}} </em>
+	      <div class="d-flex flex-wrap">
+		  {% for s in opentasite.data.superusers  %}
+		  <div class="bg-light text-dark p-1"> <a class="link-secondary" href="/account/{{ s.email }}/"> {{ s.email }}  </a> </div>
+		  {% endfor %}
+	     </div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no Users</p>
+  {% endif %}
+{% endblock %}
