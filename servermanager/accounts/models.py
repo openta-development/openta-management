@@ -21,13 +21,14 @@ def post_save(sender, instance, created, **kwargs):
     subdomains = instance.related_subdomains()
     for subdomain in subdomains:
         print(f" subdomain = {subdomain}")
-        o = OpenTASite.objects.get(subdomain=subdomain)
-        print(f" data = {o.data}")
-        superusers = o.data['superusers']
-        for u in superusers :
-            if u['email'] == email :
-                u['password'] = instance.password
-        o.save()
+        allo  = OpenTASite.objects.filter(subdomain=subdomain)
+        for o in allo : 
+            print(f" data = {o.data}")
+            superusers = o.data['superusers']
+            for u in superusers :
+                if u['email'] == email :
+                    u['password'] = instance.password
+            o.save()
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):

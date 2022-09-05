@@ -31,7 +31,7 @@ class Command(BaseCommand):
         opentasites  =  OpenTASite.objects.using('opentasites').all()
         all_superusers = []
         for o in opentasites :
-           #print(f"subdomain = {o.subdomain} {o.creator} ")
+           print(f"subdomain = {o.subdomain} {o.creator} ")
            try :
              data = o.data
              all_superusers = all_superusers + data['superusers']
