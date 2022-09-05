@@ -12,6 +12,7 @@
 		<th>   {% sort_link "Answers" "data__answers" %}  </th>
 		<th>   {% sort_link "Exercises" "data__exercises" %}  </th>
 		<th>   {% sort_link "Published" "data__exercises_published" %} </th>
+		<th>   {% sort_link "Audits" "data__audits" %} </th>
 		<th>   {% sort_link "Users" "data__users" %} </th>
 		<th>   {% sort_link "Student Login" "data__last_student_login" %} </th>
 		<th>  {% sort_link "Creator" "data__creator" %}  </th>
@@ -23,6 +24,7 @@
 		<td>  {{ opentasite.data.answers }} </td>
 		<td>  {{ opentasite.data.exercises }} </td>
 		<td>  {{ opentasite.data.exercises_published }} </td>
+		<td>  {{ opentasite.data.audits}} </td>
 		<td>  {{ opentasite.data.users }} </td>
 		<td>  {{ opentasite.data.last_student_login}} </td>
 		<td>  {{ opentasite.data.creator }} </td>
@@ -38,7 +40,9 @@
 	      <a href="/api/opentasites/all/{{ opentasite.pk}}">{{ opentasite.subdomain}}</a> <em>  {{ opentasite.data.creator}} </em>
 	      <div class="d-flex flex-wrap">
 		  {% for s in opentasite.data.superusers  %}
+		  {% if not 'super@' in s.email %}
 		  <div class="bg-light text-dark p-1"> <a class="link-secondary" href="/account/{{ s.email }}/"> {{ s.email }}  </a> </div>
+		  {% endif %}
 		  {% endfor %}
 	     </div>
       </li>

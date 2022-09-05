@@ -58,9 +58,9 @@ class CustomUserViewSet(viewsets.ModelViewSet, generics.RetrieveUpdateDestroyAPI
         print(f"GET QUERYSET")
         print(f"BASENAME = {self.basename}")
         if self.basename == 'account' :
-            queryset = CustomUser.objects.filter(email=self.request.user.email)
+            queryset = CustomUser.objects.filter(email=self.request.user.email).exclude(username='super')
         else :
-            queryset = CustomUser.objects.all()
+            queryset = CustomUser.objects.all().exclude(username='super')
 
         #if keep in ['to','all'] :
         #    queryset = list( Friend.objects.all().filter(from_user=self.request.user) ) 
