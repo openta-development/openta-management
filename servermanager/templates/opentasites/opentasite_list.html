@@ -8,7 +8,8 @@
 
   <table class="table table-success table-striped table-hover ">
   	<tr> 
-		<th>  site </th>
+		<th>   {% sort_link "site" "subdomain" %}  </th>
+		<th>   {% sort_link "Name" "data__course_name" %}  </th>
 		<th>   {% sort_link "Answers" "data__answers" %}  </th>
 		<th>   {% sort_link "Exercises" "data__exercises" %}  </th>
 		<th>   {% sort_link "Published" "data__exercises_published" %} </th>
@@ -21,6 +22,7 @@
   {% for opentasite in opentasite_list %}
   	<tr> 
 		<td>  <a title="{{ opentasite.data.description }} - {{ opentasite.db_label }}" href="/api/opentasites/all/{{ opentasite.pk}}">{{ opentasite.subdomain}}</a> </td>
+		<td>  {{ opentasite.data.course_name}} </td>
 		<td>  {{ opentasite.data.answers }} </td>
 		<td>  {{ opentasite.data.exercises }} </td>
 		<td>  {{ opentasite.data.exercises_published }} </td>
