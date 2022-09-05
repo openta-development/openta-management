@@ -23,6 +23,7 @@ def random_db_name( subdomain ):
 class OpenTASite(models.Model ):
 
     subdomain = models.CharField(max_length=4096, editable=True)
+    course_key = models.CharField(max_length=4096,  default='', editable=True)
     db_name = models.CharField(max_length=4096,  editable=True)
     db_label= models.CharField(max_length=4096,  default='', editable=True)
     creator = models.CharField(max_length=4096,  default='', editable=True)
@@ -32,8 +33,9 @@ class OpenTASite(models.Model ):
     #objects = models.Manager()
 
     class Meta:
-        constraints = [ models.UniqueConstraint(fields=['db_name'],name="Database must be unique" ),
-                        models.UniqueConstraint(fields=['subdomain'],name="Subdomain value must be unique" ) ]
+        unique_together = ("subdomain", "course_key")
+        #constraints = [ models.UniqueConstraint(fields=['db_name'],name="Database must be unique" ),
+        #                models.UniqueConstraint(fields=['subdomain'],name="Subdomain value must be unique" ) ]
                         
 
     def __str__(self):
