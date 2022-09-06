@@ -79,10 +79,13 @@ class Command(BaseCommand):
                 try :
                     superusers = data['superusers']
                     friends = []
-                    for i in range(1,len(superusers) ):
+                    trusted_friends= [ o.creator ]
+                    if not settings.RESTRICTIVE_FRIENDS :
+                        trusted_friends = superusers
+                    for i in range(1,len(trusted_friends) ):
                         for j in range(0,i):
-                            e1 = superusers[i]['email']
-                            e2 = superusers[j]['email']
+                            e1 = trusted_friends[i]['email']
+                            e2 = trusted_friends[j]['email']
                             if not e1 in bogus and not e2 in bogus :
                                 u1 = CustomUser.objects.get(email=e1)
                                 u2 = CustomUser.objects.get(email=e2)
@@ -98,14 +101,28 @@ class Command(BaseCommand):
                                     pass
                                 except Exception as e :
                                     print(f" ERROR 18993 {type(e).__name__}")
+
+
+                except Exception as e:
+                    print(f" ERROR 9227 {type(e).__name__} {str(e)} ")
+
+            for o in opentasites:
+                data = o.data
+                try:
+                    superusers = data['superusers']
                     user_email = o.creator
-                    user = CustomUser.objects.get(email=user_email)
-                    tofriend_emails = user.tofriends()
                     friends = []
-                    for email in tofriend_emails :
-                        fuser = CustomUser.objects.get(email=email)
-                        password = fuser.password
-                        friends.append( dict(email=email,password=password) )
+                    trusted_friends = [ o.creator ]
+                    if not settings.RESTRICTIVE_FRIENDS:
+                        trusted_friends = superusers
+                    for i in range(1,len(trusted_friends) ):
+                        user_email = trusted_friends[i]['email']
+                        user = CustomUser.objects.get(email=user_email)
+                        tofriend_emails = user.tofriends()
+                        for email in tofriend_emails :
+                            fuser = CustomUser.objects.get(email=email)
+                            password = fuser.password
+                            friends.append( dict(email=email,password=password) )
                     data['friends'] = friends
                     print(f"DATA = {o} {o.creator}  {friends}")
                     o.save()
