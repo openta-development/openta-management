@@ -27,7 +27,7 @@ from accounts.serializers import CustomUserViewSet, GroupViewSet,FriendViewSet, 
 from opentasites.serializers import OpenTASiteViewSet
 from django.contrib.auth.models import Group, Permission
 from django.views.generic import TemplateView
-from accounts.views import CustomUserListView, CustomUserEmailView
+from accounts.views import CustomUserListView, CustomUserEmailView, CustomUserFriendListView
 from opentasites.views import OpenTASiteListView
 
 
@@ -53,6 +53,7 @@ router.register(r'api/opentasites/', OpenTASiteViewSet,basename='/')
 urlpatterns = [
     path('', include(router.urls)),
     path('about/', TemplateView.as_view(template_name="about.html")),
+    re_path(r'^friends/?$', CustomUserFriendListView.as_view() ),
     re_path(r'^accounts/', CustomUserListView.as_view() ),
     re_path(r'^account/(?P<email>[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/?$', CustomUserEmailView.as_view() ),
     re_path(r'^opentasites/', OpenTASiteListView.as_view() ),

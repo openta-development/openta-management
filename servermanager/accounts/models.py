@@ -12,6 +12,8 @@ from django.db import models
 from django.dispatch import Signal, receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from friendship.models import Friend,FriendshipRequest
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def post_save(sender, instance, created, **kwargs):
@@ -104,6 +106,17 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    def tofriends(self) :
+        q = list( Friend.objects.filter(to_user=self.pk).values_list('from_user__email', flat=True) )
+        return q
+
+    def fromfriends(self) :
+        q = list( Friend.objects.filter(from_user=self.pk).values_list('to_user__email', flat=True) )
+
+        return q
+
+
 
     def related_subdomains( self ):
         qs = list( OpenTASite.objects.all().values_list('subdomain','data') )

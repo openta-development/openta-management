@@ -78,6 +78,7 @@ class Command(BaseCommand):
                 data = o.data
                 try :
                     superusers = data['superusers']
+                    friends = []
                     for i in range(1,len(superusers) ):
                         for j in range(0,i):
                             e1 = superusers[i]['email']
@@ -97,6 +98,17 @@ class Command(BaseCommand):
                                     pass
                                 except Exception as e :
                                     print(f" ERROR 18993 {type(e).__name__}")
+                    user_email = o.creator
+                    user = CustomUser.objects.get(email=user_email)
+                    tofriend_emails = user.tofriends()
+                    friends = []
+                    for email in tofriend_emails :
+                        fuser = CustomUser.objects.get(email=email)
+                        password = fuser.password
+                        friends.append( dict(email=email,password=password) )
+                    data['friends'] = friends
+                    print(f"DATA = {o} {o.creator}  {friends}")
+                    o.save()
 
                 except Exception as e:
                     print(f" ERROR 9227 {type(e).__name__} {str(e)} ")

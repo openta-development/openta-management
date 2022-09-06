@@ -1,9 +1,9 @@
 from django.shortcuts import render
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import renderers
+from django.db import models
 from django.http import HttpResponse
 from django.views.generic import ListView
 from django.views.generic.base import TemplateView
@@ -35,6 +35,54 @@ class CustomUserListView(ListView) :
     model = CustomUser
 
     serializer_class = CustomUserSerializer
+
+    def head(self, *arg, **wkwargs) :
+        user = self.get_queryset()
+        response = HttpResponse(
+                    headers = {'username' : user.username }
+                    )
+        return response
+
+
+class CustomUserFriendListView(ListView,TemplateView) :
+    model = CustomUser
+    serializer_class = CustomUserSerializer
+
+    template_name = "accounts/custom_user_friend_list.html"
+
+
+    def get_queryset(self , *args, **kwargs ):
+        print(f"GET FRIEND_LIST_QUERYSET")
+        print(f"USER = {self.request.user}")
+        print(f" tofriends {self.request.user.tofriends() }")
+        print(f" fromfriends {self.request.user.fromfriends() }")
+        tofriends= self.request.user.tofriends()
+        fromfriends= self.request.user.fromfriends()
+        #if keep in ['to','all'] :
+        #    print("A")
+        #    queryset = list( Friend.objects.all().filter(from_user=self.request.user) ) 
+        #    print("B")
+        #if keep in ['from','all'] :
+        #    print("C")
+        #    queryset = queryset +  list( Friend.objects.all().filter(to_user=self.request.user)   )
+        #    print("D")
+        #if keep in ['friends'] :
+        #    print("E")
+        #    queryset = Friend.objects.all()
+        #    print("F")
+
+        
+        qs1 =  CustomUser.objects.filter(email__in=fromfriends).annotate(todirection=(models.Value(False, output_field=models.BooleanField())))
+        qs2 =  CustomUser.objects.filter(email__in=tofriends).annotate(todirection=(models.Value(True, output_field=models.BooleanField())))
+        q = qs1.union( qs2  )
+        return q
+
+    def get_context_data(self, **kwargs):
+        self.object_list = self.get_queryset()
+        context = super().get_context_data(**kwargs)
+        print(f" CONTEXT = {context}")
+        return context
+
 
     def head(self, *arg, **wkwargs) :
         user = self.get_queryset()
