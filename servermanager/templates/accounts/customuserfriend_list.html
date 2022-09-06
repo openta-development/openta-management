@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1> Ussers {{ user.username }} </h1>
+  {% if customuser_list %}
+  <ul>
+    {% for customuser in customuser_list %}
+      <li>
+	      <a href="/account/{{ customuser.email}}">{{ customuser.email}}</a> 
+	      <div class="d-flex flex-wrap">
+		  {% for s in customuser.related_subdomains %}
+		  <div class="bg-light text-dark p-1"> <a class="link-secondary"href="https://{{ s }}.{{ opentahost }}/"> {{ s }}  </a> </div>
+		  {% endfor %}
+	     </div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no Users</p>
+  {% endif %}
+{% endblock %}

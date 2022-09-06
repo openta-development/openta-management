@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2> User {{ user.email }}  </h2>
+  {% if customuser_list %}
+
+
+  <h3> Friends who can browse your courslist </h3>
+  <ul>
+    {% for customuser in customuser_list %}
+    {% if customuser.todirection %} 
+      <li>
+	      <a href="/account/{{ customuser.email}}">{{ customuser.email}}</a> 
+	      <div class="d-flex flex-wrap">
+		  {% for s in user.related_subdomains %}
+		  <div class="bg-light text-dark p-1"> <a class="link-secondary"href="https://{{ s }}.{{ opentahost }}/"> {{ s }}  </a> </div>
+		  {% endfor %}
+	     </div>
+      </li>
+      {% endif %}
+    {% endfor %}
+
+  </ul>
+
+<h3> Friends whose courselist you can browse </h3>
+  <ul>
+    {% for customuser in customuser_list %}
+      {% if not customuser.todirection %} 
+
+     
+      <li>
+	      <a href="/account/{{ customuser.email}}">{{ customuser.email}}</a> 
+	      <div class="d-flex flex-wrap">
+		  {% for s in customuser.related_subdomains %}
+		  <div class="bg-light text-dark p-1"> <a class="link-secondary"href="https://{{ s }}.{{ opentahost }}/"> {{ s }}  </a> </div>
+		  {% endfor %}
+	     </div>
+      </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+
+
+
+  {% else %}
+    <p>There are no Users</p>
+  {% endif %}
+{% endblock %}
