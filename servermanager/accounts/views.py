@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.conf import settings
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -80,6 +81,7 @@ class CustomUserFriendListView(ListView,TemplateView) :
     def get_context_data(self, **kwargs):
         self.object_list = self.get_queryset()
         context = super().get_context_data(**kwargs)
+        context['opentahost'] =  settings.OPENTAHOST
         print(f" CONTEXT = {context}")
         return context
 
@@ -105,6 +107,7 @@ class CustomUserEmailView(TemplateView) :
         user = CustomUser.objects.get(email=email)
         print(f"USER = {user}")
         user_context = CustomUserSerializer(user).data
+        user_context['opentahost'] = settings.OPENTAHOST
         print(f"CONTEXT = {user_context}")
         return user_context
 

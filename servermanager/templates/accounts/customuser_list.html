@@ -9,7 +9,7 @@
 	      <a href="/account/{{ customuser.email}}">{{ customuser.email}}</a> 
 	      <div class="d-flex flex-wrap">
 		  {% for s in customuser.related_subdomains %}
-		  <div class="bg-light text-dark p-1"> <a class="link-secondary"href="https://{{ s }}.opentaproject.org/"> {{ s }}  </a> </div>
+		  <div class="bg-light text-dark p-1"> <a class="link-secondary"href="https://{{ s }}.{{ opentahost }}/"> {{ s }}  </a> </div>
 		  {% endfor %}
 	     </div>
       </li>

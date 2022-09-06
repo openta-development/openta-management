@@ -158,3 +158,5 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "/login/"
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
+OPENTAHOST = 'localhost:8000'
+RESTRICTIVE_FRIENDS = False
