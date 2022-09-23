@@ -1,4 +1,4 @@
-FROM opentaproject/openta-base:VERSION
+FROM opentaproject/openta-management-base:VERSION
 WORKDIR /srv/openta/servermanager
 COPY . /srv/openta
 EXPOSE 8000

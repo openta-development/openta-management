@@ -1,3 +1,3 @@
 echo creating dockerfile openta-managment-base:${VERSION}
-docker buildx build --platform linux/386 --tag opentaproject/openta-management-base:${VERSION} .
+docker build --platform linux/amd64 --tag opentaproject/openta-management-base:${VERSION} .
 docker push opentaproject/openta-management-base:${VERSION}
